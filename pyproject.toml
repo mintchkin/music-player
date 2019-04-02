@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "music-player"
+version = "0.1.0"
+description = ""
+authors = ["mintchkin <mintchkin.dobfner@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.5"
+pygame = "^1.9"
+
+[tool.poetry.dev-dependencies]
+ipython = "^7.4"
+pylint = "^2.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
