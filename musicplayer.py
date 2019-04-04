@@ -47,7 +47,13 @@ class Player:
     @property
     def position(self):
         """The current position in seconds within the track"""
-        return self._pos + max(0, int(pg.mixer.music.get_pos() / 1000))
+
+        # is_playing check prevents problem where there's a delay
+        # between stopping playback and mixer position reset
+        if self.is_playing:
+            self._pos + max(0, int(pg.mixer.music.get_pos() / 1000))
+        else:
+            return self._pos
     
     @position.setter
     def position(self, value):
@@ -57,9 +63,6 @@ class Player:
         if self.is_playing:
             pg.mixer.music.stop()
             self.play()
-        elif pg.mixer.music.get_pos():
-            # The time from get_pos doesn't always reset correctly
-            pg.mixer.music.stop()
 
 
     def get_file_paths(self):
