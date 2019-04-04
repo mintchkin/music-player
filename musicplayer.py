@@ -66,7 +66,7 @@ class Player:
         dirs = os.walk('audio')
         dirs_with_files = ((path, files) for path, _, files in dirs if files)
         mp3_files = (
-            [os.path.join(path, f) for f in files if f.endswith('.mp3')]
+            sorted(os.path.join(path, f) for f in files if f.endswith('.mp3'))
             for path, files in dirs_with_files
         )
         return sorted(mp3_files)
