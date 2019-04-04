@@ -69,7 +69,7 @@ class Player:
             [os.path.join(path, f) for f in files if f.endswith('.mp3')]
             for path, files in dirs_with_files
         )
-        return list(mp3_files)
+        return sorted(mp3_files)
 
 
     def play(self):
