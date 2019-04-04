@@ -51,7 +51,7 @@ class Player:
         # is_playing check prevents problem where there's a delay
         # between stopping playback and mixer position reset
         if self.is_playing:
-            self._pos + max(0, int(pg.mixer.music.get_pos() / 1000))
+            return self._pos + max(0, int(pg.mixer.music.get_pos() / 1000))
         else:
             return self._pos
     
