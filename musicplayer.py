@@ -27,7 +27,6 @@ class Player:
     def book(self, value):
         value %= len(self.get_file_paths())
         if self._book != value:
-            print("Book = " + str(value))
             self._book = value
             self.chapter = self.position = 0
     
@@ -40,7 +39,6 @@ class Player:
     def chapter(self, value):
         value %= len(self.get_file_paths()[self.book])
         if self._chapter != value:
-            print("Chapter = " + str(value))
             self._chapter = value
             self.position = 0
     
@@ -63,6 +61,25 @@ class Player:
         if self.is_playing:
             pg.mixer.music.stop()
             self.play()
+            if not self.is_playing:
+                # end of chapter
+                self.chapter += 1
+                pg.mixer.music.stop()
+                self.play()
+
+
+    @property
+    def volume(self):
+        return pg.mixer.music.get_volume()
+
+    @volume.setter
+    def volume(self, value):
+        if not self.is_playing:
+            return
+        value = min(value, 1)
+        value = max(value, 0)
+        pg.mixer.music.set_volume(value)
+        print("Volume: " + str(self.volume))
 
 
     def get_file_paths(self):
@@ -87,25 +104,57 @@ class Player:
     def stop(self):
         self.position += 0
         pg.mixer.music.stop()
+
+    def skip_forward_chapter(self):
+        """
+        Convenience function for skipping forward to next track
+        """
+        if self.is_playing:
+            self.chapter += 1
     
     def skip_back_chapter(self):
         """
         Convenience function for skipping back to last track (or beginning of the current track)
         """
-        if self.position >= 3:
+        if not self.is_playing:
+            return
+        elif self.position >= 3:
             self.position = 0
         else:
             self.chapter -= 1
     
+    def skip_forward_book(self):
+        """
+        Convenience function for skipping forward to the next book
+        """
+        if self.is_playing:
+            self.book += 1
+
     def skip_back_book(self):
         """
         Convenience function for skipping back to the last book (or beginning of the current book)
         """
-        if self.chapter or self.position >= 30:
+        if not self.is_playing:
+            return
+        elif self.chapter or self.position >= 30:
             self.chapter = self.position = 0
         else:
             self.book -= 1
-    
+
+    def increase_volume(self):
+        """
+        Convenience function for increasing the volume incrementally
+        """
+        if self.is_playing:
+            self.volume = self.volume / 0.8 + 0.008
+
+    def decrease_volume(self):
+        """
+        Convenience function for decreasing the volume incrementally
+        """
+        if self.is_playing:
+            self.volume *= 0.8
+
 
     def print_status(self):
         print("Book:\t{}\nChapter:\t{}\nPosition:\t{}".format(self.book, self.chapter, self.position))
