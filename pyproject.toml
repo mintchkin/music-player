@@ -7,6 +7,9 @@ authors = ["mintchkin <mintchkin.dobfner@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.5"
 pygame = "^1.9"
+gpiozero = "^1.5"
+pigpio = "^1.42"
+"rpi.gpio" = "^0.6.5"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.4"
